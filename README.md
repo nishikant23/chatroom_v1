@@ -14,7 +14,7 @@ A real-time, multi-room chat application built with WebSockets. The application 
 
 ## Demo
 
-![Chat App Demo](demo-screenshot.png)  
+![Chat App Demo](https://drive.google.com/file/d/1jwI2XQ-6KJquuqthLxXtEuXigwlzwIey/view?usp=sharing)  
 _A screenshot or GIF showcasing the application in action._
 
 ## Technologies Used
