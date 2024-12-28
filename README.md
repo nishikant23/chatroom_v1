@@ -13,7 +13,7 @@ A real-time, multi-room chat application built with WebSockets. The application 
 - **Auto-Scroll**: Automatically scrolls to the newest message when a new one appears in the chat.
 
 ## Demo
-- [Click Here & Watch Project Demo Video](https://drive.google.com/file/d/1jwI2XQ-6KJquuqthLxXtEuXigwlzwIey/view?usp=sharing.mp4)
+- [Click Here & Watch Project Demo Video](https://drive.google.com/file/d/1Gc3GvJUgjVIW5dJpPNHysxk0dQ-Y61aa/view?usp=drive_link)
 
 
 ## Technologies Used
