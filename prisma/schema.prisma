@@ -1,0 +1,139 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  // directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id Int @id @default(autoincrement())
+  username String @db.VarChar(100) @unique
+  password String @db.VarChar(255)
+  user_bio String? @db.VarChar(255)
+
+  chats Chat[] @relation("Users Chat")
+
+  rooms Room[] @relation("room_creator") //no. of rooms user Created, ADMIN of how many Rooms,
+  userDetails UserToRoom[] @relation("user_to_room") //no. of diff,/single room user Joined
+  
+  joined_at DateTime @default(now())
+}
+
+model Room {
+  id Int @id @default(autoincrement())
+  room_name String @db.VarChar(100) @unique
+  room_description String? @db.VarChar(255)
+  participants Int
+
+  creator User @relation("room_creator", fields: [creator_id], references: [id])
+  creator_id Int 
+
+  chat Chat[] @relation("room_to_chat")
+
+  users UserToRoom[] @relation("room_joined") // list of all users joined this room
+  created_at DateTime @default(now())
+
+  
+}
+
+model UserToRoom {
+  id Int @id @default(autoincrement()) //unique id of this Table
+  user_id Int //foreign key to user-table
+  room_id Int //foreign key to room-table
+  joined_at DateTime @default(now())
+  // chats Chat[] @relation("ChatToUserToRoom") //all chats
+
+  user User @relation("user_to_room", fields: [user_id], references: [id]) //which user joined which rooms
+  room Room @relation("room_joined", fields: [room_id], references: [id]) 
+
+  @@unique([user_id, room_id]) //unique user-room pair // same user-room pair not apear twice
+}
+
+model Chat {
+  id Int @id @default(autoincrement())
+  text String @db.Text
+  user_id Int
+  sender_name String @db.VarChar(250)
+  // userToRoom_id Int 
+  
+  user User @relation("Users Chat", fields: [user_id], references: [id])
+  // sender User @relation(("Sender Name", fields: [sender_name], references: [username]))
+
+  // user_to_room UserToRoom @relation("ChatToUserToRoom", fields: [userToRoom_id], references: [id])
+  //chats chat_id --> ud_id ( user_id & room_id ), ensures Chat properly related to user & room
+
+  room_id Int @default(1)
+  room Room @relation("room_to_chat", fields: [room_id], references: [id])
+
+  sent_at DateTime @default(now())
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// model Room {
+//   id Int @id @default(autoincrement())
+//   room_name String @db.VarChar(255) @unique
+//   room_description String @db.VarChar(255)
+//   creator User @relation("RoomCreator", fields: [creator_id], references: [id]) //mades a relation b/w creatorId with id(of User table)
+//   creator_id Int //foreign key, points to foreign column of another table, Each room must have a Creator
+//   participants Int  //no. of user in the room
+//   users User[] @relation("JoinedRoom") //all users who joined this room for chating
+//   chats Chat[] //all users all chats specific to this room only
+//   created_at DateTime @default(now())
+// }
+
+// model User {
+//   id Int @id @default(autoincrement())
+//   username String @db.VarChar(100) @unique
+//   user_bio String @db.VarChar(255) //User is who, about user
+//   rooms_created Room[] @relation("RoomCreator") //single user can have multiple rooms he created
+//   chats Chat[] //single user can have number of chats
+//   room_joined Room @relation("JoinedRoom", fields: [room_id], references: [id]) //each user belongs to which room
+//   room_id Int //as relation b/w thsi roomId with Room Table 
+//   joined_at DateTime
+// }
+
+// model Chat {
+//   id Int @id @default(autoincrement())
+//   text String @db.Text  //mesages or chat
+//   user User @relation(fields: [sender_id], references: [id]) //this chat belongs to which user, who is the sender
+//   sender_id Int
+//   room Room @relation(fields: [room_id], references: [id]) //this chat belongs to which Room 
+//   room_id Int
+//   sent_at DateTime
+// }

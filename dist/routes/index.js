@@ -1,0 +1,11 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.mainRouter = void 0;
+const express_1 = require("express");
+const userRouter_1 = require("./userRouter");
+const roomRouter_1 = require("./roomRouter");
+const chatRouter_1 = require("./chatRouter");
+exports.mainRouter = (0, express_1.Router)();
+exports.mainRouter.use("/user", userRouter_1.userRouter);
+exports.mainRouter.use("/room", roomRouter_1.roomRouter);
+exports.mainRouter.use("/chat", chatRouter_1.chatRouter);
